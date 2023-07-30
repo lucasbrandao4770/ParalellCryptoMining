@@ -129,25 +129,27 @@ void sha256(const unsigned char* message, size_t message_len, unsigned char* has
 void calculate_hash(Block* block) {
     char combined_data[MAX_DATA_SIZE + MAX_HASH_SIZE + 20];
     unsigned char hash_result[SHA256_DIGEST_LENGTH];
+    char hash_hex[SHA256_DIGEST_LENGTH * 2 + 1];
     int nonce = 0;
 
     while (1) {
         snprintf(combined_data, sizeof(combined_data), "%d%ld%s%s%d", block->index, block->timestamp, block->data, block->previous_hash, nonce);
         sha256((unsigned char*)combined_data, strlen(combined_data), hash_result);
 
+        for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
+            sprintf(&hash_hex[i * 2], "%02x", hash_result[i]);
+        }
+
         int valid_hash = 1;
         for (int i = 0; i < block->difficulty; i++) {
-            if (hash_result[i] != '0') {
+            if (hash_hex[i] != '0') {
                 valid_hash = 0;
                 break;
             }
         }
 
         if (valid_hash) {
-            // Convert the hash to a hexadecimal string representation
-            for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-                sprintf(&block->hash[i * 2], "%02x", hash_result[i]);
-            }
+            strncpy(block->hash, hash_hex, MAX_HASH_SIZE);
             break;
         }
 
@@ -219,6 +221,7 @@ int main() {
 
     add_block(&blockchain, "Data of Block 1");
     add_block(&blockchain, "Data of Block 2");
+    add_block(&blockchain, "Data of Block 3");
 
     print_blockchain(&blockchain);
 
