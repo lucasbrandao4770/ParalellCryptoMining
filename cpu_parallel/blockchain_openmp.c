@@ -228,7 +228,9 @@ void print_blockchain(const Blockchain* blockchain) {
 }
 
 int main() {
-    int difficulty = 6;
+    double start_time_serial = omp_get_wtime();
+    
+    int difficulty = 5;
 
     Blockchain blockchain;
     blockchain.size = 0;
@@ -239,11 +241,45 @@ int main() {
     blockchain.blocks[blockchain.size] = genesis_block;
     blockchain.size++;
 
-    add_block(&blockchain, "Data of Block 1");
-    add_block(&blockchain, "Data of Block 2");
-    add_block(&blockchain, "Data of Block 3");
-    add_block(&blockchain, "Data of Block 4");
-    add_block(&blockchain, "Data of Block 5");
+
+    for (int i = 1; i <= 5; i++) {
+        add_block(&blockchain, "Data of Block");
+    }
+
+    double end_time_serial = omp_get_wtime();
+    double execution_time_serial = end_time_serial - start_time_serial;
+
+    printf("Serial Execution Time: %f seconds\n", execution_time_serial);
+
+    double start_time_parallel = omp_get_wtime();
+
+    #pragma omp parallel sections
+    {
+        #pragma omp section
+        add_block(&blockchain, "Data of Block");
+        #pragma omp section
+        add_block(&blockchain, "Data of Block");
+        #pragma omp section
+        add_block(&blockchain, "Data of Block");
+        #pragma omp section
+        add_block(&blockchain, "Data of Block");
+        #pragma omp section
+        add_block(&blockchain, "Data of Block");
+    }
+
+    double end_time_parallel = omp_get_wtime();
+    double execution_time_parallel = end_time_parallel - start_time_parallel;
+
+    printf("Parallel Execution Time: %f seconds\n", execution_time_parallel);
+
+    // Calculate and display speedup
+    double speedup_general = execution_time_serial / execution_time_parallel;
+    double absolute_speedup = execution_time_serial - execution_time_parallel;
+    double relative_speedup = (execution_time_serial - execution_time_parallel) / execution_time_serial;
+
+    printf("Speedup (General): %f\n", speedup_general);
+    printf("Absolute Speedup: %f seconds\n", absolute_speedup);
+    printf("Relative Speedup: %f\n", relative_speedup);
 
     print_blockchain(&blockchain);
 
