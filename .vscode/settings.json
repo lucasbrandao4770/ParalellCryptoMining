@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "block.h": "c",
+        "sha256.h": "c",
+        "blockchain.h": "c",
+        "stdlib.h": "c"
+    }
+}
