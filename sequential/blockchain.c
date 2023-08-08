@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
+#include "arg_parser.h"
 
 #define MAX_DATA_SIZE 100
 #define MAX_HASH_SIZE 65
@@ -207,12 +208,22 @@ void print_blockchain(const Blockchain* blockchain) {
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     int difficulty = 2;
+    int size = 0;
+    int capacity = 10;
+
+    KeyValue keyValues[] = {
+        {"difficulty", &difficulty},
+        {"size", &size},
+        {"capacity", &capacity}
+    };
+
+    parse_arguments(argc, argv, keyValues, sizeof(keyValues) / sizeof(KeyValue));
 
     Blockchain blockchain;
-    blockchain.size = 0;
-    blockchain.capacity = 10;
+    blockchain.size = size;
+    blockchain.capacity = capacity;
     blockchain.blocks = malloc(blockchain.capacity * sizeof(Block));
 
     Block genesis_block = create_genesis_block(difficulty);
