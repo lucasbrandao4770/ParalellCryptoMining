@@ -5,10 +5,10 @@ NVCC = nvcc
 CFLAGS = -O2
 
 # Target executable
-TARGET = blockchain_cuda
+TARGET = cuda_miner
 
 # CUDA source files
-CU_SRC = blockchain_cuda.cu
+CU_SRC = cuda_miner.cu
 
 # CUDA header files
 CU_HEADERS = sha256.cuh
