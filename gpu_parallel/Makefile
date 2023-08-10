@@ -2,7 +2,7 @@
 NVCC = nvcc
 
 # Compiler flags
-CFLAGS = -O2
+CFLAGS = -O2 -Xcudafe --diag_suppress=declared_but_not_referenced
 
 # Target executable
 TARGET = cuda_miner
