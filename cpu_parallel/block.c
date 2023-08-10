@@ -24,7 +24,7 @@ void calculate_hash(Block* block) {
         for (int nonce = start_nonce; nonce < end_nonce; nonce++) {
             if (valid_hash) break; // Check if a valid hash has been found by another thread
 
-            snprintf(combined_data, sizeof(combined_data), "%d%ld%s%s%d", block->index, block->timestamp, block->data, block->previous_hash, nonce);
+            snprintf(combined_data, sizeof(combined_data), "%d%lld%s%s%d", block->index, block->timestamp, block->data, block->previous_hash, nonce);
             sha256((unsigned char*)combined_data, strlen(combined_data), hash_result);
 
             for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
