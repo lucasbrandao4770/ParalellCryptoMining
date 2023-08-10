@@ -222,7 +222,7 @@ void add_block(Blockchain* blockchain, const char* data) {
 
 void print_block(const Block* block) {
     printf("Index: %d\n", block->index);
-    printf("Timestamp: %ld\n", block->timestamp);
+    printf("Timestamp: %lld\n", block->timestamp);
     printf("Data: %s\n", block->data);
     printf("Previous Hash: %s\n", block->previous_hash);
     printf("Hash: %s\n", block->hash);

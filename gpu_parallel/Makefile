@@ -25,13 +25,13 @@ else
     CLEAN_FILES = $(CU_OBJ) $(TARGET)
 endif
 
-# Compile target
+# Compile and link target
 $(TARGET): $(CU_OBJ)
-	$(NVCC) $(CFLAGS) -o $(TARGET) $(CU_OBJ)
+	$(NVCC) $(CFLAGS) $(CU_OBJ) -o $(TARGET)
 
 # Compile CUDA source files to object files
 %.o: %.cu $(CU_HEADERS)
-	$(NVCC) $(CFLAGS) -c $< -o $@
+	$(NVCC) $(CFLAGS) -dc $< -o $@
 
 # Clean target
 clean:
