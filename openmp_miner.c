@@ -1,4 +1,3 @@
-#include "cpu_parallel/block.h"
 #include "cpu_parallel/blockchain.h"
 #include "utils/arg_parser.h"
 
