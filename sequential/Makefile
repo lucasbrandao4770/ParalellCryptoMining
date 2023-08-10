@@ -27,9 +27,7 @@ $(TARGET): $(OBJECTS)
 # Clean target to remove object files and the executable
 clean:
 ifeq ($(OS),Windows_NT)
-	# Windows-specific command to delete files
 	-del /f /q ..\sequential_miner.o block.o blockchain.o sha256.o sequential_miner.exe ..\utils\arg_parser.o
 else
-	# UNIX-like command to delete files
 	-rm -f ../sequential_miner.o block.o blockchain.o sha256.o sequential_miner ..\utils\arg_parser.o
 endif
