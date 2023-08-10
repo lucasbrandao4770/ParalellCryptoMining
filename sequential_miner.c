@@ -1,4 +1,3 @@
-#include "sequential/block.h"
 #include "sequential/blockchain.h"
 #include "utils/arg_parser.h"
 

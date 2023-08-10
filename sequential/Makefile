@@ -8,7 +8,7 @@ CFLAGS = -Wall -O2
 TARGET = sequential_miner
 
 # Source files to be compiled
-SOURCES = ../sequential_miner.c ../sequential/block.c blockchain.c sha256.c ../utils/arg_parser.c
+SOURCES = ../sequential_miner.c ../sequential/blockchain.c sha256.c ../utils/arg_parser.c
 
 # Include paths for header files
 INCLUDES = -I../utils
@@ -27,7 +27,7 @@ $(TARGET): $(OBJECTS)
 # Clean target to remove object files and the executable
 clean:
 ifeq ($(OS),Windows_NT)
-	-del /f /q ..\sequential_miner.o block.o blockchain.o sha256.o sequential_miner.exe ..\utils\arg_parser.o
+	-del /f /q ..\sequential_miner.o blockchain.o sha256.o sequential_miner.exe ..\utils\arg_parser.o
 else
-	-rm -f ..\sequential_miner.o block.o blockchain.o sha256.o sequential_miner ..\utils\arg_parser.o
+	-rm -f ..\sequential_miner.o blockchain.o sha256.o sequential_miner ..\utils\arg_parser.o
 endif
