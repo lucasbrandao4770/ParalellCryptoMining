@@ -89,18 +89,31 @@ __global__ void calculate_hash_kernel(int index, time_t timestamp, char* data, c
     int_to_str(index, buffer);
     custom_strncpy(input + offset, buffer, custom_strlen(buffer));
     offset += custom_strlen(buffer);
+    input[offset++] = '\0'; // Adiciona caractere de terminação null
 
     int_to_str((int)timestamp, buffer);
     custom_strncpy(input + offset, buffer, custom_strlen(buffer));
     offset += custom_strlen(buffer);
+    input[offset++] = '\0'; // Adiciona caractere de terminação null
 
     int_to_str(difficulty, buffer);
     custom_strncpy(input + offset, buffer, custom_strlen(buffer));
     offset += custom_strlen(buffer);
+    input[offset++] = '\0'; // Adiciona caractere de terminação null
 
     int_to_str(nonce, buffer);
     custom_strncpy(input + offset, buffer, custom_strlen(buffer));
     offset += custom_strlen(buffer);
+    input[offset++] = '\0'; // Adiciona caractere de terminação null
+
+    custom_strncpy(input + offset, data, custom_strlen(data)); // Adiciona o data ao input
+    offset += custom_strlen(data);
+    input[offset++] = '\0'; // Adiciona caractere de terminação null
+
+    custom_strncpy(input + offset, previous_hash, custom_strlen(previous_hash)); // Adiciona o previous_hash ao input
+    offset += custom_strlen(previous_hash);
+    input[offset++] = '\0'; // Adiciona caractere de terminação null
+
 
     sha256_init(&sha256);
     sha256_update(&sha256, (BYTE*)input, offset);
@@ -117,8 +130,9 @@ __global__ void calculate_hash_kernel(int index, time_t timestamp, char* data, c
     }
 
     if (valid_hash) {
-        custom_strncpy(result, hash_hex, MAX_HASH_SIZE);
-        *found_nonce = nonce;
+         if (atomicExch(found_nonce, nonce) == -1) {
+            custom_strncpy(result, hash_hex, MAX_HASH_SIZE);
+        }
     }
 }
 
@@ -139,14 +153,27 @@ void calculate_hash(Block* block) {
     cudaMemcpy(d_previous_hash, block->previous_hash, MAX_HASH_SIZE, cudaMemcpyHostToDevice);
     cudaMemcpy(d_found_nonce, &found_nonce, sizeof(int), cudaMemcpyHostToDevice);
 
-    dim3 threadsPerBlock(NUM_THREADS);
-    dim3 numBlocks((int)ceil(1024.0 / threadsPerBlock.x)); // For example, you may need to tune this
+    char result[MAX_HASH_SIZE] = {0};
+    cudaMemcpy(d_result, result, MAX_HASH_SIZE, cudaMemcpyHostToDevice);
 
-    calculate_hash_kernel<<<numBlocks, threadsPerBlock>>>(block->index, block->timestamp, d_data, d_previous_hash, block->difficulty, d_result, d_found_nonce);
-    cudaDeviceSynchronize();
+    dim3 threadsPerBlock(NUM_THREADS);
+    dim3 numBlocks((int)ceil(1.0 * 1024 * 1024 * 1024 / threadsPerBlock.x));
+
+    int attempts = 0;
+    while(found_nonce == -1) {  // Keep trying until a nonce is found
+        calculate_hash_kernel<<<numBlocks, threadsPerBlock>>>(block->index, block->timestamp, d_data, d_previous_hash, block->difficulty, d_result, d_found_nonce);
+        cudaDeviceSynchronize();
+
+        cudaMemcpy(&found_nonce, d_found_nonce, sizeof(int), cudaMemcpyDeviceToHost);
+        attempts++;
+
+        if (attempts > 10) { // Just an arbitrary number to limit the number of attempts.
+            printf("Failed to find a valid nonce after %d attempts\n", attempts);
+            break;
+        }
+    }
 
     cudaMemcpy(block->hash, d_result, MAX_HASH_SIZE, cudaMemcpyDeviceToHost);
-    cudaMemcpy(&found_nonce, d_found_nonce, sizeof(int), cudaMemcpyDeviceToHost);
 
     cudaFree(d_data);
     cudaFree(d_previous_hash);
@@ -155,6 +182,7 @@ void calculate_hash(Block* block) {
 
     printf("Found nonce: %d\n", found_nonce);
 }
+
 
 // main, etc.
 Block create_genesis_block(int difficulty) {
@@ -202,6 +230,7 @@ void print_block(const Block* block) {
 }
 
 void print_blockchain(const Blockchain* blockchain) {
+  printf("====================\n");
     for (int i = 0; i < blockchain->size; i++) {
         const Block* block = &blockchain->blocks[i];
         print_block(block);
@@ -209,7 +238,12 @@ void print_blockchain(const Blockchain* blockchain) {
 }
 
 int main() {
-    int difficulty = 2;
+    clock_t start, end;
+    double cpu_time_used;
+
+    start = clock();
+
+    int difficulty = 6;
 
     Blockchain blockchain;
     blockchain.size = 0;
@@ -222,10 +256,22 @@ int main() {
     add_block(&blockchain, "Data of Block 1");
     add_block(&blockchain, "Data of Block 2");
     add_block(&blockchain, "Data of Block 3");
+    add_block(&blockchain, "Data of Block 4");
+    add_block(&blockchain, "Data of Block 5");
+    add_block(&blockchain, "Data of Block 6");
+    add_block(&blockchain, "Data of Block 7");
+    add_block(&blockchain, "Data of Block 8");
+    add_block(&blockchain, "Data of Block 9");
+    add_block(&blockchain, "Data of Block 10");
+    add_block(&blockchain, "Data of Block 11");
+    add_block(&blockchain, "Data of Block 12");
 
     print_blockchain(&blockchain);
 
     free(blockchain.blocks);
 
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Tempo total: %f segundos\n", cpu_time_used);
     return 0;
 }

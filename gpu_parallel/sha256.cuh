@@ -2,7 +2,8 @@
 #define SHA256_H
 
 
-#define SHA256_BLOCK_SIZE 32
+/****************************** MACROS ******************************/
+#define SHA256_BLOCK_SIZE 32            // SHA256 outputs a 32 byte digest
 
 #define ROTLEFT(a,b) (((a) << (b)) | ((a) >> (32-(b))))
 #define ROTRIGHT(a,b) (((a) >> (b)) | ((a) << (32-(b))))
@@ -22,9 +23,9 @@
     if (err != cudaSuccess) \
         printf("GPU: cudaError %d (%s)\n", err, cudaGetErrorString(err)); \
 }
-
-typedef unsigned char BYTE;
-typedef uint32_t  WORD;
+/**************************** DATA TYPES ****************************/
+typedef unsigned char BYTE;             // 8-bit byte
+typedef uint32_t  WORD;             // 32-bit word, change to "long" for 16-bit machines
 
 typedef struct JOB {
 	BYTE * data;
@@ -54,7 +55,7 @@ static const WORD host_k[64] = {
 	0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
 };
 
-
+/*********************** FUNCTION DECLARATIONS **********************/
 char * print_sha(BYTE * buff);
 __device__ void sha256_init(SHA256_CTX *ctx);
 __device__ void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len);
@@ -67,6 +68,7 @@ char * hash_to_string(BYTE * buff) {
 	for (i = 0, k = 0; i < 32; i++, k+= 2)
 	{
 		sprintf(string + k, "%.2x", buff[i]);
+		//printf("%02x", buff[i]);
 	}
 	string[64] = 0;
 	return string;
@@ -80,6 +82,11 @@ void print_jobs(JOB ** jobs, int n) {
 	for (int i = 0; i < n; i++)
 	{
         print_job(jobs[i]);
+		// printf("@ %p JOB[%i] \n", jobs[i], i);
+		// printf("\t @ 0x%p data = %x \n", jobs[i]->data, (jobs[i]->data == 0)? 0 : jobs[i]->data[0]);
+		// printf("\t @ 0x%p size = %llu \n", &(jobs[i]->size), jobs[i]->size);
+		// printf("\t @ 0x%p fname = %s \n", &(jobs[i]->fname), jobs[i]->fname);
+		// printf("\t @ 0x%p digest = %s \n------\n", jobs[i]->digest, hash_to_string(jobs[i]->digest));
 	}
 }
 
@@ -117,6 +124,8 @@ __device__ void sha256_transform(SHA256_CTX *ctx, const BYTE data[])
 {
 	WORD a, b, c, d, e, f, g, h, i, j, t1, t2, m[64];
     WORD S[8];
+
+    //mycpy32(S, ctx->state);
 
     #pragma unroll 16
 	for (i = 0, j = 0; i < 16; ++i, j += 4)
@@ -177,8 +186,9 @@ __device__ void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len)
 {
 	WORD i;
 
+	// for each byte in message
 	for (i = 0; i < len; ++i) {
-
+		// ctx->data == message 512 bit chunk
 		ctx->data[ctx->datalen] = data[i];
 		ctx->datalen++;
 		if (ctx->datalen == 64) {
@@ -195,6 +205,7 @@ __device__ void sha256_final(SHA256_CTX *ctx, BYTE hash[])
 
 	i = ctx->datalen;
 
+	// Pad whatever data is left in the buffer.
 	if (ctx->datalen < 56) {
 		ctx->data[i++] = 0x80;
 		while (i < 56)
@@ -208,6 +219,7 @@ __device__ void sha256_final(SHA256_CTX *ctx, BYTE hash[])
 		memset(ctx->data, 0, 56);
 	}
 
+	// Append to the padding the total message's length in bits and transform.
 	ctx->bitlen += ctx->datalen * 8;
 	ctx->data[63] = ctx->bitlen;
 	ctx->data[62] = ctx->bitlen >> 8;
@@ -219,7 +231,8 @@ __device__ void sha256_final(SHA256_CTX *ctx, BYTE hash[])
 	ctx->data[56] = ctx->bitlen >> 56;
 	sha256_transform(ctx, ctx->data);
 
-
+	// Since this implementation uses little endian byte ordering and SHA uses big endian,
+	// reverse all the bytes when copying the final state to the output hash.
 	for (i = 0; i < 4; ++i) {
 		hash[i] = (ctx->state[0] >> (24 - i * 8)) & 0x000000ff;
 		hash[i + 4] = (ctx->state[1] >> (24 - i * 8)) & 0x000000ff;
