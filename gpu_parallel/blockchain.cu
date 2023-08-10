@@ -130,7 +130,7 @@ __global__ void calculate_hash_kernel(int index, time_t timestamp, char* data, c
     }
 
     if (valid_hash) {
-         if (atomicExch(found_nonce, nonce) == -1) {
+        if (atomicExch(found_nonce, nonce) == -1) {
             custom_strncpy(result, hash_hex, MAX_HASH_SIZE);
         }
     }
@@ -230,7 +230,7 @@ void print_block(const Block* block) {
 }
 
 void print_blockchain(const Blockchain* blockchain) {
-  printf("====================\n");
+    printf("====================\n");
     for (int i = 0; i < blockchain->size; i++) {
         const Block* block = &blockchain->blocks[i];
         print_block(block);
