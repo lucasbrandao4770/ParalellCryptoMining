@@ -1,10 +1,10 @@
+#include <stdlib.h>
+
 #include "sequential/blockchain.h"
 #include "utils/arg_parser.h"
 
-#include <stdlib.h>
-
 int main(int argc, char *argv[]) {
-    int difficulty = 2;
+    int difficulty = 4;
     int size = 0;
     int capacity = 10;
 
@@ -19,8 +19,7 @@ int main(int argc, char *argv[]) {
     Blockchain blockchain;
     blockchain.size = size;
     blockchain.capacity = capacity;
-    blockchain.blocks = malloc(blockchain.capacity * sizeof(Block));
-
+    blockchain.blocks = (Block*)malloc(blockchain.capacity * sizeof(Block));
     Block genesis_block = create_genesis_block(difficulty);
     blockchain.blocks[blockchain.size] = genesis_block;
     blockchain.size++;

@@ -3,78 +3,11 @@
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
-#include "sha256.cuh"
 #include <cuda_runtime.h>
 
-#define MAX_DATA_SIZE 100
-#define MAX_HASH_SIZE 65
-#define SHA256_DIGEST_LENGTH 32
-#define NUM_THREADS 256
-
-typedef struct {
-    int index;
-    time_t timestamp;
-    char data[MAX_DATA_SIZE];
-    char previous_hash[MAX_HASH_SIZE];
-    int difficulty;
-    char hash[MAX_HASH_SIZE];
-} Block;
-
-typedef struct {
-    Block* blocks;
-    int size;
-    int capacity;
-} Blockchain;
-
-__device__ int custom_strlen(const char* str) {
-    int length = 0;
-    while (str[length] != '\0') {
-        length++;
-    }
-    return length;
-}
-
-__device__ void custom_strncpy(char* dest, const char* src, int n) {
-    for (int i = 0; i < n && src[i] != '\0'; i++) {
-        dest[i] = src[i];
-    }
-}
-
-__device__ void int_to_str(int value, char* result) {
-    int i = 0;
-    if (value == 0) {
-        result[0] = '0';
-        result[1] = '\0';
-        return;
-    }
-
-    while (value != 0) {
-        result[i++] = (value % 10) + '0';
-        value /= 10;
-    }
-    result[i] = '\0';
-
-    // Reverse the result string
-    int start = 0;
-    int end = i - 1;
-    char temp;
-    while (start < end) {
-        temp = result[start];
-        result[start] = result[end];
-        result[end] = temp;
-        start++;
-        end--;
-    }
-}
-
-__device__ void to_hex_string(BYTE* bytes, char* hex, int length) {
-    const char hex_digits[] = "0123456789abcdef";
-    for (int i = 0; i < length; i++) {
-        hex[i * 2] = hex_digits[(bytes[i] >> 4) & 0xF];
-        hex[i * 2 + 1] = hex_digits[bytes[i] & 0xF];
-    }
-    hex[length * 2] = '\0';
-}
+#include "sha256.cuh"
+#include "blockchain.cuh"
+#include "utilities.cuh"
 
 __global__ void calculate_hash_kernel(int index, time_t timestamp, char* data, char* previous_hash, int difficulty, char* result, int* found_nonce) {
     int nonce = blockIdx.x * blockDim.x + threadIdx.x;
@@ -219,7 +152,6 @@ void add_block(Blockchain* blockchain, const char* data) {
     blockchain->size++;
 }
 
-
 void print_block(const Block* block) {
     printf("Index: %d\n", block->index);
     printf("Timestamp: %lld\n", block->timestamp);
@@ -235,43 +167,4 @@ void print_blockchain(const Blockchain* blockchain) {
         const Block* block = &blockchain->blocks[i];
         print_block(block);
     }
-}
-
-int main() {
-    clock_t start, end;
-    double cpu_time_used;
-
-    start = clock();
-
-    int difficulty = 6;
-
-    Blockchain blockchain;
-    blockchain.size = 0;
-    blockchain.capacity = 10;
-    blockchain.blocks = (Block*)malloc(blockchain.capacity * sizeof(Block));
-    Block genesis_block = create_genesis_block(difficulty);
-    blockchain.blocks[blockchain.size] = genesis_block;
-    blockchain.size++;
-
-    add_block(&blockchain, "Data of Block 1");
-    add_block(&blockchain, "Data of Block 2");
-    add_block(&blockchain, "Data of Block 3");
-    add_block(&blockchain, "Data of Block 4");
-    add_block(&blockchain, "Data of Block 5");
-    add_block(&blockchain, "Data of Block 6");
-    add_block(&blockchain, "Data of Block 7");
-    add_block(&blockchain, "Data of Block 8");
-    add_block(&blockchain, "Data of Block 9");
-    add_block(&blockchain, "Data of Block 10");
-    add_block(&blockchain, "Data of Block 11");
-    add_block(&blockchain, "Data of Block 12");
-
-    print_blockchain(&blockchain);
-
-    free(blockchain.blocks);
-
-    end = clock();
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("Tempo total: %f segundos\n", cpu_time_used);
-    return 0;
 }

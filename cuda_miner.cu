@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "cpu_parallel/blockchain.h"
+#include "gpu_parallel/blockchain.cuh"
 #include "utils/arg_parser.h"
 
 int main(int argc, char *argv[]) {
