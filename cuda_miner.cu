@@ -1,7 +1,7 @@
 #include <stdlib.h>
 
 #include "gpu_parallel/blockchain.cuh"
-#include "utils/arg_parser.h"
+#include "gpu_parallel/utilities.cuh"
 
 int main(int argc, char *argv[]) {
     int difficulty = 4;

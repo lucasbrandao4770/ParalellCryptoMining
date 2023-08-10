@@ -45,8 +45,6 @@ typedef struct {
 	WORD state[8];
 } SHA256_CTX;
 
-__constant__ WORD dev_k[64];
-
 
 /*********************** FUNCTION DECLARATIONS **********************/
 // char * print_sha(BYTE * buff);
