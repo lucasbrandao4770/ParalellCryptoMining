@@ -1,5 +1,5 @@
-#include "sequential/block.h"
-#include "sequential/blockchain.h"
+#include "cpu_parallel/block.h"
+#include "cpu_parallel/blockchain.h"
 #include "utils/arg_parser.h"
 
 #include <stdlib.h>

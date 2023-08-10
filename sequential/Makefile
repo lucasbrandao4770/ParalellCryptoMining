@@ -29,5 +29,5 @@ clean:
 ifeq ($(OS),Windows_NT)
 	-del /f /q ..\sequential_miner.o block.o blockchain.o sha256.o sequential_miner.exe ..\utils\arg_parser.o
 else
-	-rm -f ../sequential_miner.o block.o blockchain.o sha256.o sequential_miner ..\utils\arg_parser.o
+	-rm -f ..\sequential_miner.o block.o blockchain.o sha256.o sequential_miner ..\utils\arg_parser.o
 endif

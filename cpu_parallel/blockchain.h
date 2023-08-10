@@ -2,6 +2,7 @@
 #define BLOCKCHAIN_H
 
 #include "block.h"
+
 typedef struct {
     Block* blocks;
     int size;
