@@ -9,31 +9,26 @@ RUN apt-get update && apt-get install -y \
 FROM base AS cpu_parallel
 RUN apt-get install -y \
     libomp-dev
-COPY cpu_parallel/ /app/cpu_parallel/
-COPY utils/ /app/utils/
-COPY openmp_miner.c /app/
-WORKDIR /app
-RUN make -f cpu_parallel/Makefile
+COPY . /app/
+WORKDIR /app/cpu_parallel
+RUN make
 
 # Stage for GPU Parallelization (CUDA)
-FROM nvidia/cuda:11.4.2-base AS gpu_parallel
-COPY gpu_parallel/ /app/gpu_parallel/
-COPY cuda_miner.cu /app/
-WORKDIR /app
-RUN make -f gpu_parallel/Makefile
+FROM nvidia/cuda:11.0.3-devel AS gpu_parallel
+COPY . /app/
+WORKDIR /app/gpu_parallel
+RUN make
 
 # Stage for Sequential Code
 FROM base AS sequential
-COPY sequential/ /app/sequential/
-COPY utils/ /app/utils/
-COPY sequential_miner.c /app/
-WORKDIR /app
-RUN make -f sequential/Makefile
+COPY . /app/
+WORKDIR /app/sequential
+RUN make
 
 # Final stage to gather all binaries
 FROM base AS final
-COPY --from=cpu_parallel /app/openmp_miner /app/
-COPY --from=gpu_parallel /app/cuda_miner /app/
-COPY --from=sequential /app/sequential_miner /app/
+COPY --from=cpu_parallel /app/cpu_parallel/openmp_miner /app/
+COPY --from=gpu_parallel /app/gpu_parallel/cuda_miner /app/
+COPY --from=sequential /app/sequential/sequential_miner /app/
 WORKDIR /app
 CMD ["./run_all.sh"]
