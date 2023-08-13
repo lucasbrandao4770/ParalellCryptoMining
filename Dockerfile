@@ -31,4 +31,5 @@ COPY --from=cpu_parallel /app/cpu_parallel/openmp_miner /app/
 COPY --from=gpu_parallel /app/gpu_parallel/cuda_miner /app/
 COPY --from=sequential /app/sequential/sequential_miner /app/
 WORKDIR /app
-CMD ["./run_all.sh"]
+CMD ./run_all.sh
+
