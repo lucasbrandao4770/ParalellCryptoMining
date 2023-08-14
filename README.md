@@ -98,14 +98,14 @@ To compile and run the baseline code, follow these steps (we will use the sequen
 
 Replace `path/to/sequential` with the actual path to the `sequential` directory in your project.
 
-The same steps can be followed for the openmp_miner (`path/to/cpu_parallel`) and the cuda_miner (`path/to/gpu_parallel`) codes.
+The same steps can be followed for the `openmp_miner` (`path/to/cpu_parallel`) and the `cuda_miner` (`path/to/gpu_parallel`) codes.
 
 ## Usage Examples
 You can run the mining code with various command-line options to configure the blockchain parameters. Currently, the supported options are:
 - `difficulty`: Difficulty level (number of leading zeros in the hash).
 - `size`: Size of the blockchain.
 - `capacity`: Capacity of the blockchain.
-- `num_blocks`: Capacity of the blockchain.
+- `num_blocks`: Number of blocks to be added until the code ends.
 
 You can run any of the main files with none/any/all the options, in any order, like in the examples:
 
@@ -118,18 +118,18 @@ You can run any of the main files with none/any/all the options, in any order, l
 ```
 
 ```bash
-./sequential_miner difficulty=5 size=0 num_blocks=10
+./sequential_miner size=0 difficulty=5 num_blocks=10
 ```
 
 ```bash
-./sequential_miner difficulty=5 size=0 num_blocks=10 capacity=5
+./sequential_miner num_blocks=10 difficulty=5 capacity=5 size=0
 ```
 
 ## Experiments
 
 ### Timing Experiments with `time_miners.bat`
 
-The `time_miners.bat` script is designed to automate the timing experiments for the Sequential, OpenMP, and CUDA miners. It compiles and runs each implementation, measures the execution time, and saves the results in a text file.
+The `time_miners.bat` script is designed to automate the timing experiments for the `Sequential`, `OpenMP`, and `CUDA` miners. It compiles and runs each implementation, measures the execution time, and saves the results in a text file.
 
 #### How to Use
 
