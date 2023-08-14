@@ -9,14 +9,14 @@ int main(int argc, char *argv[]) {
     int difficulty = 4; /**< Default mining difficulty level. */
     int size = 0; /**< Default size of the blockchain (number of blocks). */
     int capacity = 10; /**< Default capacity allocated for blocks in the blockchain. */
-    int num_blocks = 5; /**< Default number of blocks to be added to the blockchain. */
+    int numBlocks = 5; /**< Default number of blocks to be added to the blockchain. */
 
     KeyValue keyValues[] = {
         /**< Mapping command-line arguments to their corresponding variables. */
         {"difficulty", &difficulty},
         {"size", &size},
         {"capacity", &capacity},
-        {"num_blocks", &num_blocks}
+        {"numBlocks", &numBlocks}
     };
 
     parse_arguments(argc, argv, keyValues, sizeof(keyValues) / sizeof(KeyValue));
@@ -32,12 +32,12 @@ int main(int argc, char *argv[]) {
     blockchain.size++;
     /**< Create the genesis block and add it to the blockchain. */
 
-    for (int i = 1; i <= num_blocks; i++) {
+    for (int i = 1; i <= numBlocks; i++) {
         char data[50];
-        sprintf(data, "Data of Block %%d", i);
+        sprintf(data, "Data of Block %d", i);
         add_block(&blockchain, data);
     }
-    /**< Add blocks to the blockchain with predefined data using a loop based on "num_blocks". */
+    /**< Add blocks to the blockchain with predefined data using a loop based on "numBlocks". */
 
     print_blockchain(&blockchain);
     /**< Print the details of the entire blockchain, showing the chain of blocks. */

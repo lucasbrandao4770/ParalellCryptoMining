@@ -18,17 +18,17 @@ OBJECTS = $(SOURCES:.c=.o)
 
 # Rule to build the target executable from object files
 $(TARGET): $(OBJECTS)
-\t$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(TARGET)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(TARGET)
 
 # Rule to compile C source files into object files
 .c.o:
-\t$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Clean target to remove object files and the executable
 # Different commands for Windows and other platforms
 clean:
 ifeq ($(OS),Windows_NT)
-\t-del /f /q ..\\sequential_miner.o blockchain.o sha256.o sequential_miner.exe ..\\utils\\arg_parser.o
+	-del /f /q ..\\sequential_miner.o blockchain.o sha256.o sequential_miner.exe ..\\utils\\arg_parser.o
 else
-\t-rm -f ..\\sequential_miner.o blockchain.o sha256.o sequential_miner ..\\utils\\arg_parser.o
+	-rm -f ..\\sequential_miner.o blockchain.o sha256.o sequential_miner ..\\utils\\arg_parser.o
 endif

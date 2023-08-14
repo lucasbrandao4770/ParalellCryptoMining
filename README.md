@@ -105,7 +105,7 @@ You can run the mining code with various command-line options to configure the b
 - `difficulty`: Difficulty level (number of leading zeros in the hash).
 - `size`: Size of the blockchain.
 - `capacity`: Capacity of the blockchain.
-- `num_blocks`: Number of blocks to be added until the code ends.
+- `numBlocks`: Number of blocks to be added until the code ends.
 
 You can run any of the main files with none/any/all the options, in any order, like in the examples:
 
@@ -118,11 +118,11 @@ You can run any of the main files with none/any/all the options, in any order, l
 ```
 
 ```bash
-./sequential_miner size=0 difficulty=5 num_blocks=10
+./sequential_miner size=0 difficulty=5 numBlocks=10
 ```
 
 ```bash
-./sequential_miner num_blocks=10 difficulty=5 capacity=5 size=0
+./sequential_miner numBlocks=10 difficulty=5 capacity=5 size=0
 ```
 
 ## Experiments
@@ -135,10 +135,10 @@ The `time_miners.bat` script is designed to automate the timing experiments for 
 
 1. Open a Command Prompt or PowerShell window.
 2. Navigate to the directory containing `time_miners.bat`.
-3. Run the script with any desired command-line arguments for the miners (e.g., `difficulty`, `size`, `capacity`, `num_blocks`):
+3. Run the script with any desired command-line arguments for the miners (e.g., `difficulty`, `size`, `capacity`, `numBlocks`):
    ```bash
-   time_miners.bat difficulty=4 size=10 num_blocks=20
-4. The results will be saved in the `results` folder with a filename based on the current date, time, and provided arguments (e.g., `2022-08-13_00-23-45_difficulty=4_size=10_num_blocks=20.txt`).
+   time_miners.bat difficulty=4 size=10 numBlocks=20
+4. The results will be saved in the `results` folder with a filename based on the current date, time, and provided arguments (e.g., `2022-08-13_00-23-45_difficulty=4_size=10_numBlocks=20.txt`).
 
 # License
 This work is licensed under a

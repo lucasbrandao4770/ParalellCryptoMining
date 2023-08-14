@@ -21,6 +21,8 @@ set FILENAME=%TOP_DIR%/results/%FILENAME%
 
 :: Append command-line arguments to the filename
 set ARGS=%*
+:: Replace spaces in ARGS with underscores
+set ARGS=%ARGS: =_%
 if not "%ARGS%" == "" (
     set FILENAME=%FILENAME%_%ARGS%
 )
