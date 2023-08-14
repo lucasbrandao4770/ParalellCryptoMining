@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "cpu_parallel/blockchain.h"
@@ -7,11 +8,13 @@ int main(int argc, char *argv[]) {
     int difficulty = 4;
     int size = 0;
     int capacity = 10;
+    int num_blocks = 5;
 
     KeyValue keyValues[] = {
         {"difficulty", &difficulty},
         {"size", &size},
-        {"capacity", &capacity}
+        {"capacity", &capacity},
+        {"num_blocks", &num_blocks}
     };
 
     parse_arguments(argc, argv, keyValues, sizeof(keyValues) / sizeof(KeyValue));
@@ -24,11 +27,11 @@ int main(int argc, char *argv[]) {
     blockchain.blocks[blockchain.size] = genesis_block;
     blockchain.size++;
 
-    add_block(&blockchain, "Data of Block 1");
-    add_block(&blockchain, "Data of Block 2");
-    add_block(&blockchain, "Data of Block 3");
-    add_block(&blockchain, "Data of Block 4");
-    add_block(&blockchain, "Data of Block 5");
+    for (int i = 1; i <= num_blocks; i++) {
+        char data[50];
+        sprintf(data, "Data of Block %%d", i);
+        add_block(&blockchain, data);
+    }
 
     print_blockchain(&blockchain);
 
