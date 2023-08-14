@@ -4,11 +4,11 @@
 This project focuses on optimizing cryptocurrency mining through parallelism, comparing the efficiency of OpenMP (CPU) and CUDA (GPU) against a sequential C baseline.
 
 ## Project Description
-This project focuses on optimizing cryptocurrency mining through parallelism, comparing the efficiency of OpenMP (CPU) and RAPIDS (GPU) against a sequential C baseline. The implementation includes the following components:
+This project focuses on optimizing cryptocurrency mining through parallelism, comparing the efficiency of OpenMP (CPU) and CUDA (GPU) against a sequential C baseline. The implementation includes the following components:
 - **SHA-256 Algorithm**: Utilized for hashing blocks in the blockchain.
 - **Blockchain Structure**: Implementation of a simple blockchain to demonstrate cryptocurrency mining.
-- **Parallelization Techniques**: Employing OpenMP for CPU parallelism and RAPIDS for GPU parallelism.
-- **Performance Comparison**: Comprehensive benchmarks comparing the sequential, OpenMP, and RAPIDS implementations.
+- **Parallelization Techniques**: Employing OpenMP for CPU parallelism and CUDA for GPU parallelism.
+- **Performance Comparison**: Comprehensive benchmarks comparing the sequential, OpenMP, and CUDA implementations.
 
 ### Mining Process Overview
 The mining process involves solving a cryptographic puzzle by finding a nonce that results in a hash with a specific number of leading zeros, determined by the difficulty level. The process includes the following steps:
