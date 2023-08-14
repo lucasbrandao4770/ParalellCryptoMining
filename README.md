@@ -1,7 +1,34 @@
 [![CC BY 4.0][cc-by-shield]][cc-by]
 
 # ParalellCryptoMining
-This project focuses on optimizing cryptocurrency mining through parallelism, comparing the efficiency of OpenMP (CPU) and RAPIDS (GPU) against a sequential C baseline.
+This project focuses on optimizing cryptocurrency mining through parallelism, comparing the efficiency of OpenMP (CPU) and CUDA (GPU) against a sequential C baseline.
+
+## Project Description
+This project focuses on optimizing cryptocurrency mining through parallelism, comparing the efficiency of OpenMP (CPU) and RAPIDS (GPU) against a sequential C baseline. The implementation includes the following components:
+- **SHA-256 Algorithm**: Utilized for hashing blocks in the blockchain.
+- **Blockchain Structure**: Implementation of a simple blockchain to demonstrate cryptocurrency mining.
+- **Parallelization Techniques**: Employing OpenMP for CPU parallelism and RAPIDS for GPU parallelism.
+- **Performance Comparison**: Comprehensive benchmarks comparing the sequential, OpenMP, and RAPIDS implementations.
+
+### Mining Process Overview
+The mining process involves solving a cryptographic puzzle by finding a nonce that results in a hash with a specific number of leading zeros, determined by the difficulty level. The process includes the following steps:
+1. Create a Genesis Block: Initialize the first block in the blockchain.
+2. Add Blocks: Add new blocks with data and link them through hashes.
+3. Calculate Hash: Compute the SHA-256 hash based on the block content.
+4. Validate Hash: Check if the hash meets the difficulty criteria.
+5. Update Blockchain: If a valid hash is found, update the blockchain with the new block.
+
+For more details, refer to the code documentation within the individual modules.
+
+## Flowcharts
+
+### Bitcoin Mining Process
+![Bitcoin Mining Process](path/to/bitcoin_mining_process.png)
+
+### SHA-256 Algorithm
+![SHA-256 Algorithm](path/to/sha256_algorithm.png)
+
+These flowcharts provide a visual representation of the mining process and the SHA-256 hashing algorithm used in the project.
 
 ## Dependencies
 
@@ -45,16 +72,16 @@ To compile the code using the provided Makefile, you'll need to install GNU Make
   sudo apt-get install make
   ```
 
-## Sequential
+## Compiling and Running the Code
 
-To compile and run the sequential baseline code, follow these steps:
+To compile and run the baseline code, follow these steps (we will use the sequential code for this example):
 
 1. Navigate to the `sequential` directory:
    ```bash
    cd path/to/sequential
    ```
 
-2. Compile the code using the provided Makefile:
+2. Compile the code using the provided `Makefile`:
    ```bash
    mingw32-make
    ```
@@ -71,6 +98,47 @@ To compile and run the sequential baseline code, follow these steps:
 
 Replace `path/to/sequential` with the actual path to the `sequential` directory in your project.
 
+The same steps can be followed for the openmp_miner (`path/to/cpu_parallel`) and the cuda_miner (`path/to/gpu_parallel`) codes.
+
+## Usage Examples
+You can run the mining code with various command-line options to configure the blockchain parameters. Currently, the supported options are:
+- `difficulty`: Difficulty level (number of leading zeros in the hash).
+- `size`: Size of the blockchain.
+- `capacity`: Capacity of the blockchain.
+- `num_blocks`: Capacity of the blockchain.
+
+You can run any of the main files with none/any/all the options, in any order, like in the examples:
+
+```bash
+./sequential_miner
+```
+
+```bash
+./sequential_miner difficulty=5
+```
+
+```bash
+./sequential_miner difficulty=5 size=0 num_blocks=10
+```
+
+```bash
+./sequential_miner difficulty=5 size=0 num_blocks=10 capacity=5
+```
+
+## Experiments
+
+### Timing Experiments with `time_miners.bat`
+
+The `time_miners.bat` script is designed to automate the timing experiments for the Sequential, OpenMP, and CUDA miners. It compiles and runs each implementation, measures the execution time, and saves the results in a text file.
+
+#### How to Use
+
+1. Open a Command Prompt or PowerShell window.
+2. Navigate to the directory containing `time_miners.bat`.
+3. Run the script with any desired command-line arguments for the miners (e.g., `difficulty`, `size`, `capacity`, `num_blocks`):
+   ```bash
+   time_miners.bat difficulty=4 size=10 num_blocks=20
+4. The results will be saved in the `results` folder with a filename based on the current date, time, and provided arguments (e.g., `2022-08-13_00-23-45_difficulty=4_size=10_num_blocks=20.txt`).
 
 # License
 This work is licensed under a
