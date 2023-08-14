@@ -57,7 +57,7 @@ void calculate_hash(Block* block) {
         sha256((unsigned char*)combined_data, strlen(combined_data), hash_result);
 
         for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
-        /**< Converting the hash into a hexadecimal string for further processing. */
+            /**< Converting the hash into a hexadecimal string for further processing. */
             sprintf(&hash_hex[i * 2], "%02x", hash_result[i]);
         }
 

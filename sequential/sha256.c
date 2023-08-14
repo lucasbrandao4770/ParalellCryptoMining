@@ -52,7 +52,7 @@ void sha256(const unsigned char* message, size_t message_len, unsigned char* has
     int_to_big_endian((uint32_t)(message_len * 8), &padded_message[padded_len - 8]);
 
     for (size_t chunk_start = 0; chunk_start < padded_len; chunk_start += 64) {
-    /**< Processing chunks of 64 bytes from the padded message. */
+        /**< Processing chunks of 64 bytes from the padded message. */
         uint32_t w[64] = { 0 };
         uint32_t a, b, c, d, e, f, g, h_temp;
 
@@ -69,14 +69,14 @@ void sha256(const unsigned char* message, size_t message_len, unsigned char* has
             w[t] = big_endian_to_int(&padded_message[chunk_start + t * 4]);
         }
         for (int t = 16; t < 64; t++) {
-    /**< Expanding the message schedule by applying the SHA-256 operations for each 32-bit word. */
+            /**< Expanding the message schedule by applying the SHA-256 operations for each 32-bit word. */
             uint32_t s0 = ROTR(w[t - 15], 7) ^ ROTR(w[t - 15], 18) ^ (w[t - 15] >> 3);
             uint32_t s1 = ROTR(w[t - 2], 17) ^ ROTR(w[t - 2], 19) ^ (w[t - 2] >> 10);
             w[t] = w[t - 16] + s0 + w[t - 7] + s1;
         }
 
         for (int t = 0; t < 64; t++) {
-    /**< Main compression loop of the SHA-256 algorithm, applying bitwise operations as per the standard. */
+            /**< Main compression loop of the SHA-256 algorithm, applying bitwise operations as per the standard. */
             uint32_t s1 = ROTR(e, 6) ^ ROTR(e, 11) ^ ROTR(e, 25);
             uint32_t ch = (e & f) ^ ((~e) & g);
             uint32_t temp1 = h_temp + s1 + ch + k[t] + w[t];
