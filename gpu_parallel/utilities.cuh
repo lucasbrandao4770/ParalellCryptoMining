@@ -29,13 +29,15 @@ typedef struct {
  */
 
 void parse_arguments(int argc, char *argv[], KeyValue *keyValues, size_t keyValueCount);
+
 /**
  * @brief Calculates the length of a null-terminated string.
  *
  * @param str Pointer to the null-terminated string.
  * @return Length of the string.
  */
-int custom_strlen(const char* str);
+__device__ int custom_strlen(const char* str);
+
 /**
  * @brief Copies the first 'n' characters from the source string to the destination string.
  *
@@ -44,14 +46,15 @@ int custom_strlen(const char* str);
  * @param n Number of characters to copy.
  */
 
-void custom_strncpy(char* dest, const char* src, int n);
+__device__ void custom_strncpy(char* dest, const char* src, int n);
+
 /**
  * @brief Converts an integer value to its string representation.
  *
  * @param value Integer value to convert.
  * @param result Pointer to the buffer to store the resulting string.
  */
-void int_to_str(int value, char* result);
+__device__ void int_to_str(int value, char* result);
 
 /**
  * @brief Converts a byte array to its corresponding hexadecimal string representation.
@@ -60,6 +63,6 @@ void int_to_str(int value, char* result);
  * @param hex Pointer to the buffer to store the resulting hexadecimal string.
  * @param length Length of the byte array.
  */
-void to_hex_string(BYTE* bytes, char* hex, int length);
+__device__ void to_hex_string(BYTE* bytes, char* hex, int length);
 
 #endif   // UTILITIES_H
