@@ -36,9 +36,9 @@ These flowcharts provide a visual representation of the mining process and the S
 To compile and run the C code, you'll need a C compiler and associated development tools. Here's how you can install them:
 
 - **Windows (using MinGW):**
-  1. Download and install [MinGW](http://mingw-w64.org/doku.php/download/mingw-builds).
-  2. Select the desired architecture and follow the installation instructions.
-  3. Add MinGW's `bin` directory to your system's PATH environment variable.
+1. Download and install [MinGW](http://mingw-w64.org/doku.php/download/mingw-builds).
+2. Select the desired architecture and follow the installation instructions.
+3. Add MinGW's `bin` directory to your system's PATH environment variable.
 
 - **Linux:**
   ```bash
