@@ -140,7 +140,15 @@ The `time_miners.bat` script is designed to automate the timing experiments for 
    time_miners.bat difficulty=4 size=10 numBlocks=20
 4. The results will be saved in the `results` folder with a filename based on the current date, time, and provided arguments (e.g., `2022-08-13_00-23-45_difficulty=4_size=10_numBlocks=20.txt`).
 
-# License
+## Documentation
+
+The code documentation is generated using Doxygen. To generate the documentation, navigate to the project directory and run:
+
+```bash
+doxygen Doxyfile
+```
+
+## License
 This work is licensed under a
 [Creative Commons Attribution 4.0 International License][cc-by].
 
