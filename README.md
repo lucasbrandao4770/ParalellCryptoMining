@@ -22,11 +22,11 @@ For more details, refer to the code documentation within the individual modules.
 
 ## Flowcharts
 
-### Bitcoin Mining Process
-![Bitcoin Mining Process](path/to/bitcoin_mining_process.png)
-
 ### SHA-256 Algorithm
-![SHA-256 Algorithm](path/to/sha256_algorithm.png)
+![SHA-256 Algorithm](/images/sha256.jpeg)
+
+### SHA-256 in CUDA
+![SHA-256 in CUDA](/images/sha256CUDA.jpeg)
 
 These flowcharts provide a visual representation of the mining process and the SHA-256 hashing algorithm used in the project.
 
