@@ -23,10 +23,10 @@ For more details, refer to the code documentation within the individual modules.
 ## Flowcharts
 
 ### SHA-256 Algorithm
-![SHA-256 Algorithm](/images/sha256.jpeg)
+<img src="assets/sha256.jpeg" alt="SHA-256 Algorithm" width="500"/>
 
 ### SHA-256 in CUDA
-![SHA-256 in CUDA](/images/sha256CUDA.jpeg)
+<img src="assets/sha256CUDA.jpeg" alt="SHA-256 in CUDA" width="500"/>
 
 These flowcharts provide a visual representation of the mining process and the SHA-256 hashing algorithm used in the project.
 
